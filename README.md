@@ -21,7 +21,7 @@ ViSEO is an AI-powered system designed to automate the generation of SEO-optimiz
 ## 🚀 Installation
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/yourusername/ViSEO.git
+git clone https://github.com/nonggfiii/KLTN.git
 cd ViSEO
 ```
 
