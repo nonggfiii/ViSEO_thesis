@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Excel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <style>
+        /* Gradient từ đen đến xanh tím (#3533cd) */
+        body {
+            background: linear-gradient(to bottom, black, #3533cd);
+            height: 100vh; 
+            margin: 0; 
+            color: white;
+        }
+
+        /* Banner styles */
+
+        .banner {
+            margin-top: 56px; /* khoảng cách từ trên xuống */
+            text-align: center;
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        .banner-logo img {
+            width: 220px;
+            height: 220px;
+        }
+
+        .banner-title {
+            margin-top: 16px;
+        }
+
+        .seo-text {
+            color: #719fcd; 
+        }
+
+        .banner-description {
+            font-weight: 300; 
+            font-size: 14px; 
+            max-width: 640px; 
+            margin: 8px auto 0;
+            display: inline-block;
+        }
+
+        .banner-button {
+            font-size: 20px;
+            padding: 12px 24px;
+            font-weight: bold;
+            margin-top: 32px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 24px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .banner-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Banner Section -->
+    <section class="banner">
+        <div class="banner-content">
+            <div class="banner-logo">
+                <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo">
+            </div>         
+            <p class="banner-title">
+                Tạo mô tả sản phẩm đạt chuẩn <span class="seo-text">SEO</span>
+            </p>  
+            <p class="banner-description">
+                Vui lòng tải lên tệp dữ liệu của bạn trước khi thực hiện các tính năng!
+                <br>Bạn có thể tham khảo file nhập dữ liệu mẫu <a href="{{ url_for('static', filename='assets/File dữ liệu mẫu.xlsx') }}" class="" download>
+                    Tại đây
+                </a> 
+            </p>
+        </div>
+        <div class="container mt-2">
+            {% if error_message %}
+                <p style="color: red;">{{ error_message }}</p>
+            {% endif %}
+            <form id="uploadForm" action="/" method="POST" enctype="multipart/form-data" class="mt-4">
+                <div class="mb-3">
+                    <input type="file" name="file" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Nạp dữ liệu</button>
+            </form>
+    
+            <!-- Loading icon -->
+            <div id="loadingSpinner" style="display: none; text-align: center; margin-top: 20px;">
+<div class="spinner-border" role="status">
+                    <span class="visually-hidden">Vui lòng đợi giây lát...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <script>
+        // Khi form được submit
+        $('#uploadForm').on('submit', function(e) {
+            e.preventDefault(); // Ngừng form submit mặc định
+
+            // Hiển thị loading spinner
+            $('#loadingSpinner').show();
+
+            // Gửi form bằng AJAX
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/',  // Địa chỉ gửi request
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // Ẩn loading spinner khi upload thành công
+                    $('#loadingSpinner').hide();
+                    
+                    // Chuyển hướng đến /canvas_view sau khi upload thành công
+                    window.location.href = "/canvas_view";
+                },
+                error: function(xhr, status, error) {
+                    // Ẩn loading spinner nếu có lỗi
+                    $('#loadingSpinner').hide();
+                    alert('Có lỗi xảy ra khi upload!');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
